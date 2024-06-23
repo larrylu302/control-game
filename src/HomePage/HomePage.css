@@ -1,0 +1,87 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.homepage-container {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    background-image: url('home_background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .home-title {
+    margin-bottom: 20px;
+    color: rgb(21, 67, 252);
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive; /* A font style often associated with children */
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates a 2x2 grid */
+    gap: 20px;
+    max-width: 600px; /* Adjust the size as needed */
+    margin: auto;
+  }
+
+  .game-button {
+    padding: 20px;
+    border-radius: 10px;
+    color: black;
+    font-size: 24px;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    text-decoration: none; /* Removes the underline from links */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px; /* Set a fixed height for uniformity */
+  }
+
+  .words-game {
+    background-color: #9999ff; /* A soft red */
+  }
+
+  .digits-game {
+    background-color: #9999ff; /* A soft green */
+  }
+
+  .digits-reversed-game {
+    background-color: #9999ff; /* A soft purple */
+  }
+
+  .verbal-game {
+    background-color: #9999ff; /* A sky blue */
+  }
+
+  /* Hover effects to make the buttons interactive */
+  .game-button:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+  }
+
+  .disabled {
+    pointer-events: none;
+    color: darkgrey;
+    background-color: #555555; /* Dark grey background for disabled buttons */
+  }
+
+  .see-score-button {
+    padding: 15px 30px;
+    border-radius: 10px;
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    font-size: 24px;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    text-decoration: none; /* Removes the underline from links */
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  }
+
+  .see-score-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }

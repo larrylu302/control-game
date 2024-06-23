@@ -1,0 +1,66 @@
+  .title {
+    margin-bottom: 40px;
+    color: #333;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+  }
+
+  .final-score-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    display: flex;             
+    flex-direction: column;
+    align-items: center;
+}
+
+.scores-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+  .game-score {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .game-title {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #555;
+  }
+
+  .score-item {
+    margin-bottom: 8px;
+  }
+
+  .score-key {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .score-value {
+    color: #777;
+  }
+
+  .green-button {
+    padding: 15px 30px;
+    border-radius: 10px;
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    font-size: 24px;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    text-decoration: none; /* Removes the underline from links */
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    margin-top: 40px;
+  }
+
+  .green-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
