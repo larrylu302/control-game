@@ -548,10 +548,9 @@ const CategoriesGame = () => {
       <>
         <div style={{ marginBottom: "30px" }} className="words-instructions">
           <h1>Categories Recall</h1>
-          You'll see several words in a grid at the bottom and four different categories at the top. Drag each word to the correct category.
-              The computer will help you by only letting you place a word in a correct slot.
-              Click start when you are ready and the a blank grid will apeear with your words.
-          <div style={{ paddingTop: "20px" }}>But be careful! You cannot change your answers once you’ve selected from the word bank.</div>
+          You'll see several words in a grid at the bottom and four categories at the top. Click to place each word in the correct category. The computer will help you by only letting you place a word in the right spot. Click "Start" when you are ready. A blank grid
+ will appear with a list of words. Find the same words from the grid above and click each one as quickly as possible, to fill the grid below.
+          <div style={{ paddingTop: "20px" }}>But be careful! You cannot change your answers once you've selected them. Choose wisely. The fate of the multiverse depends on you!</div>
         </div>
         <button className="green-button" onClick={() => { setShowSettingsForm(true); setGameState((prev) => ({ ...prev, showInitial: false })); }}>
           Settings
