@@ -306,3 +306,13 @@ input[type="checkbox"].green-input:checked::before {
 .mute-button:hover {
   background-color: darkgreen;
 }
+
+.faded {
+  opacity: 0.5;
+  color: gray;
+}
+.filled {
+  opacity: 1;
+  color: black;
+}
+

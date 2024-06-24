@@ -8,8 +8,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const NumbersGame = () => {
   const { scores, updateScores } = useScores();
-  const navigate = useNavigate(); // Hook to access the navigate function
-  const {name, day} = useParams();
+  const navigate = useNavigate();
+  const { name, day } = useParams();
 
   const initialGameState = {
     numberSequence: [],
@@ -23,10 +23,11 @@ const NumbersGame = () => {
     score: 0,
     maxDigitsInRound: 0,
     initialSettings: {
-      sequenceLength: 1,
-      intervalBetweenDigits: 1,
+      sequenceLength: 3,
+      intervalBetweenDigits: .75,
       timeBeforeTest: 1,
-      totalRounds: 1,}
+      totalRounds: 5,
+    }
   };
 
   const [gameState, setGameState] = useState(initialGameState);
@@ -127,11 +128,12 @@ const NumbersGame = () => {
 
   const handleGameOver = () => {
     updateScores('numbers',
-      {'Final Score': gameState.score,
-      'Max Digits Recalled in One Round': gameState.maxDigitsInRound,
-    }
+      {
+        'Final Score': gameState.score,
+        'Max Digits Recalled in One Round': gameState.maxDigitsInRound,
+      }
     )
-    navigate(`/${name}/${day}/home`); // Navigate back to the home page
+    navigate(`/${name}/${day}/home`);
   }
 
   return (
@@ -140,17 +142,16 @@ const NumbersGame = () => {
 
       {!gameStarted && !showSettingsForm && (
         <div>
-          <div style={{ marginBottom: '50px', marginLeft:'30px', marginRight:'30px', paddingBottom:'70px' }} className='numbers-instructions'>
+          <div style={{ marginBottom: '50px', marginLeft: '30px', marginRight: '30px', paddingBottom: '70px' }} className='numbers-instructions'>
             <h1>Decipher the Secret Password</h1>
-            Directions: You will hear several numbers (so make sure to wear your headphones!). Your job is to
-            remember these numbers and select the tiles with those numbers in the exact order of how they were
-            presented.
-            <div>But be careful! You cannot change your answers once you’ve selected them.  
-            Choose wisely. The fate of the multiverse depends on you!</div>
+            Directions: You will presented with several numbers. Your job is to
+            find these numbers in the grid at the bottom and click on the matching tiles as fast as you can in the same order they are shown. When you're done, click the submit button.
+            <div>But be careful! You cannot change your answers once you’ve selected them.
+              Choose wisely. The fate of the multiverse depends on you!</div>
 
           </div>
           <div className="initial-buttons">
-            <button style={{marginRight:'20px'}} className="number-button" onClick={handleShowSettings}>Settings</button>
+            <button style={{ marginRight: '20px' }} className="number-button" onClick={handleShowSettings}>Settings</button>
             <button className="number-button" onClick={startGame}>Start Game</button>
           </div>
           <audio ref={audioRef} src={readInstructions} muted={muted} />
@@ -168,10 +169,10 @@ const NumbersGame = () => {
       {gameStarted && !gameState.gameOver && (
         <>
           {gameState.displaySequence &&
-          <div className='numbers-instructions'>
-            <div>Listen carefully!</div>
-            <img src={volumeIcon} alt="img not working" />
-          </div>}
+            <div className='numbers-instructions'>
+              <div>Listen carefully!</div>
+              <img src={volumeIcon} alt="img not working" />
+            </div>}
           <GameDisplay
             gameState={gameState}
             onNumberClick={handleNumberInput}
@@ -179,12 +180,12 @@ const NumbersGame = () => {
         </>
       )}
       {gameState.gameOver && (
-      <div className="numbers-instructions">
+        <div className="numbers-instructions">
           <h2>Game Over</h2>
           <p>Your final score is: {gameState.score}</p>
           <p>Maximum digits recalled in one round: {gameState.maxDigitsInRound}</p>
           <button className="number-setting-button-submit" onClick={handleGameOver}>Done</button>
-      </div>
+        </div>
       )}
     </div>
   );
@@ -193,14 +194,19 @@ const NumbersGame = () => {
 const GameDisplay = ({ gameState, onNumberClick }) => (
   <div>
     {gameState.displayTest && (
-      <RecallDisplay onNumberClick={onNumberClick} />
+      <RecallDisplay gameState={gameState} onNumberClick={onNumberClick} />
     )}
   </div>
 );
 
-const RecallDisplay = ({ onNumberClick }) => (
-  <div className="RecallDisplay" style={{backgroundColor:'#f4c76e', borderRadius:'10px'}}>
-    <h2 style={{color:'black'}}>Recall the sequence:</h2>
+const RecallDisplay = ({ gameState, onNumberClick }) => (
+  <div className="RecallDisplay" style={{ backgroundColor: '#f4c76e', borderRadius: '10px' }}>
+    <h2 style={{ color: 'black' }}>Recall the sequence:</h2>
+    <div className="order-list">
+      {gameState.numberSequence.map((digit, index) => (
+        <div key={index} className="order-item"> {digit}</div>
+      ))}
+    </div>
     <div className="buttons">
       {Array.from({ length: 10 }, (_, index) => (
         <button key={index} onClick={() => onNumberClick(index)} className="number-grid-button">

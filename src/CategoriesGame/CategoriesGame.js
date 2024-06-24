@@ -151,8 +151,8 @@ const CategoriesGame = () => {
     totalRounds: 1,
     maxWordsRecalled: 0,
     initialSettings: {
-      numCategories: 3,
-      waitTime: 0,
+      numCategories: 4,
+      waitTime: 1,
       showCategoryLabel: true,
       totalRounds: 1,
     },
@@ -359,10 +359,11 @@ const CategoriesGame = () => {
                   {word}
                 </button>
               ))}
-            </div>
             <button onClick={submitChoices} className="green-button" disabled={!canSubmitChoices()}>
               Recall
             </button>
+            </div>
+
           </div>
         )}
       </>
@@ -393,11 +394,30 @@ const CategoriesGame = () => {
       handleChoice(selectedWord);
     };
 
+    const assignWordToCell = (categoryIndex, rowIndex) => {
+      if (gameState.selectedWord) {
+        setGameState((prevState) => {
+          const newChoices = [...prevState.userChoices];
+          if (!newChoices[categoryIndex][rowIndex] && !prevState.userChoices.flat().includes(gameState.selectedWord)) {
+            newChoices[categoryIndex][rowIndex] = gameState.selectedWord;
+            return {
+              ...prevState,
+              userChoices: newChoices,
+              selectedWord: "",
+            };
+          }
+          return prevState;
+        });
+      }
+    };
+
     return (
       <>
         {gameState.showSecondChoices && (
           <div className="game-container">
-            <h2>Navigate through the words and assign the correct words to the correct category. You will not be able to go back one a word is assigned, so choose carefully. Press "Submit Selection" when you are done.</h2>
+            <h2>
+              Navigate through the words and assign the correct words to the correct category. You will not be able to go back once a word is assigned, so choose carefully. Be as quick as you can! Press "Submit Selection" when you are done.
+            </h2>
             <div className="categories-container">
               {gameState.selectedCategories.map((category, categoryIndex) => (
                 <table key={categoryIndex} className="category-table">
@@ -411,8 +431,13 @@ const CategoriesGame = () => {
                   <tbody>
                     {Array.from({ length: 5 }).map((_, rowIndex) => (
                       <tr key={rowIndex}>
-                        <td className="category-cell" onClick={() => assignWordToCell(categoryIndex, rowIndex)}>
-                          {gameState.userChoices[categoryIndex][rowIndex] || ""}
+                        <td
+                          className={`category-cell ${
+                            gameState.userChoices[categoryIndex][rowIndex] ? "filled" : "faded"
+                          }`}
+                          onClick={() => assignWordToCell(categoryIndex, rowIndex)}
+                        >
+                          {gameState.userChoices[categoryIndex][rowIndex] || gameState.correctWords[categoryIndex * 5 + rowIndex] || ""}
                         </td>
                       </tr>
                     ))}
@@ -421,18 +446,30 @@ const CategoriesGame = () => {
               ))}
             </div>
             <div className="word-bank">
-              <select onChange={handleDropdownChange} className="word-selector" value={gameState.selectedWord}>
-              <option value="" disabled>
-                Select a Word
-              </option>
+              <select
+                onChange={handleDropdownChange}
+                className="word-selector"
+                value={gameState.selectedWord}
+              >
+                <option value="" disabled>
+                  Select a Word
+                </option>
                 {allWords.map((word, index) => (
-                  <option key={index} value={word} disabled={gameState.userChoices.flat().includes(word)}>
+                  <option
+                    key={index}
+                    value={word}
+                    disabled={gameState.userChoices.flat().includes(word)}
+                  >
                     {word}
                   </option>
                 ))}
               </select>
             </div>
-            <button onClick={submitFinalChoices} className="green-button" disabled={!canSubmitChoices()}>
+            <button
+              onClick={submitFinalChoices}
+              className="green-button"
+              disabled={!canSubmitChoices()}
+            >
               Submit Selection
             </button>
           </div>
@@ -440,6 +477,10 @@ const CategoriesGame = () => {
       </>
     );
   };
+
+
+
+
 
   const startOver = () => {
     setGameState((prevState) => ({
@@ -507,7 +548,9 @@ const CategoriesGame = () => {
       <>
         <div style={{ marginBottom: "30px" }} className="words-instructions">
           <h1>Categories Recall</h1>
-          Directions: You will be presented with several words. Your job is to organize those words into categories, remembering which words were in each category. You will then be given the categories and asked to recall the words in each category from a large word bank.
+          You'll see several words in a grid at the bottom and four different categories at the top. Drag each word to the correct category.
+              The computer will help you by only letting you place a word in a correct slot.
+              Click start when you are ready and the a blank grid will apeear with your words.
           <div style={{ paddingTop: "20px" }}>But be careful! You cannot change your answers once you’ve selected from the word bank.</div>
         </div>
         <button className="green-button" onClick={() => { setShowSettingsForm(true); setGameState((prev) => ({ ...prev, showInitial: false })); }}>

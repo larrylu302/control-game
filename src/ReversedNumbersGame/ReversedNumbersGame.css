@@ -119,3 +119,21 @@ html, body, #root {
     border-color: #d29b54;
     box-shadow: 0 0 8px rgba(210, 155, 84, 0.6);
   }
+
+  .order-list {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .order-item {
+    margin: 0 10px;
+    padding: 10px;
+    border: 1px solid #B0BEC5;
+    border-radius: 4px;
+    background-color: #CFD8DC;
+    font-size: 16px;
+    font-weight: bold;
+    color: #37474F;
+  }
+

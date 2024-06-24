@@ -7,11 +7,10 @@ import { useScores } from '../ScoresContext';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const ReversedNumbersGame = () => {
-
   const { scores, updateScores } = useScores();
-  const navigate = useNavigate(); // Hook to access the navigate function
-  const {name, day} = useParams();
-  // Initial states for easier resets
+  const navigate = useNavigate();
+  const { name, day } = useParams();
+
   const initialGameState = {
     numberSequence: [],
     userSequence: [],
@@ -26,10 +25,10 @@ const ReversedNumbersGame = () => {
   };
 
   const initialSettings = {
-    sequenceLength: 1,
-    intervalBetweenDigits: 1,
+    sequenceLength: 3,
+    intervalBetweenDigits: .75,
     timeBeforeTest: 1,
-    totalRounds: 1,
+    totalRounds: 5,
   };
 
   const [gameState, setGameState] = useState(initialGameState);
@@ -140,13 +139,12 @@ const ReversedNumbersGame = () => {
   };
 
   const handleGameOver = () => {
-    updateScores('reversedNumbers',
-    {'Final Score': gameState.score,
-    'Max Digits Recalled in One Round': gameState.maxDigitsInRound,
-  }
-  )
-  navigate(`/${name}/${day}/home`); // Navigate back to the home page
-  }
+    updateScores('reversedNumbers', {
+      'Final Score': gameState.score,
+      'Max Digits Recalled in One Round': gameState.maxDigitsInRound,
+    });
+    navigate(`/${name}/${day}/home`);
+  };
 
   return (
     <div className="ReversedNumbersGame">
@@ -154,16 +152,15 @@ const ReversedNumbersGame = () => {
 
       {!gameStarted && !showSettingsForm && (
         <div>
-          <div style={{ marginBottom: '50px', marginLeft:'30px', marginRight:'30px', paddingBottom:'70px' }} className='numbers-instructions'>
+          <div style={{ marginBottom: '50px', marginLeft: '30px', marginRight: '30px', paddingBottom: '70px' }} className='numbers-instructions'>
             <h1>Unscramble the Code to the Vault</h1>
-            Directions: You will hear several numbers (so make sure to wear your headphones!). Your job is to
-            remember these numbers and select the tiles with those numbers in the REVERSE order of how they were
-            presented.
+            Directions: You will presented with several numbers. Your job is to
+            find these numbers in the grid at the bottom and click on the matching tiles as fast as you can in the REVERSE order they are shown. When you're done, click the submit button.
             <div>But be careful! You cannot change your answers once you've selected them.
-            Choose wisely. The fate of the multiverse depends on you!</div>
+              Choose wisely. The fate of the multiverse depends on you!</div>
           </div>
           <div className="initial-buttons">
-            <button style={{marginRight:'20px'}} className="gray-button" onClick={handleShowSettings}>Settings</button>
+            <button style={{ marginRight: '20px' }} className="gray-button" onClick={handleShowSettings}>Settings</button>
             <button className="gray-button" onClick={startGame}>Start Game</button>
           </div>
           <audio ref={audioRef} src={readInstructions} muted={muted} />
@@ -193,11 +190,11 @@ const ReversedNumbersGame = () => {
       )}
       {gameState.gameOver && (
         <div className="numbers-instructions">
-        <h2>Game Over</h2>
-        <p>Your final score is: {gameState.score}</p>
-        <p>Maximum digits recalled in one round: {gameState.maxDigitsInRound}</p>
-        <button onClick={handleGameOver} className="number-setting-button-submit">Done</button>
-      </div>
+          <h2>Game Over</h2>
+          <p>Your final score is: {gameState.score}</p>
+          <p>Maximum digits recalled in one round: {gameState.maxDigitsInRound}</p>
+          <button onClick={handleGameOver} className="number-setting-button-submit">Done</button>
+        </div>
       )}
     </div>
   );
@@ -206,14 +203,19 @@ const ReversedNumbersGame = () => {
 const GameDisplay = ({ gameState, onNumberClick }) => (
   <div>
     {gameState.displayTest && (
-      <RecallDisplay onNumberClick={onNumberClick} />
+      <RecallDisplay gameState={gameState} onNumberClick={onNumberClick} />
     )}
   </div>
 );
 
-const RecallDisplay = ({ onNumberClick }) => (
-  <div className="RecallDisplay" style={{backgroundColor:'#A8A1A1', borderRadius:'10px'}}>
-    <h2 style={{color:'black'}}>Recall the sequence in reverse:</h2>
+const RecallDisplay = ({ gameState, onNumberClick }) => (
+  <div className="RecallDisplay" style={{ backgroundColor: '#A8A1A1', borderRadius: '10px' }}>
+    <h2 style={{ color: 'black' }}>Recall the sequence in reverse:</h2>
+    <div className="order-list">
+      {gameState.numberSequence.map((digit, index) => (
+        <div key={index} className="order-item"> {digit}</div>
+      ))}
+    </div>
     <div className="buttons">
       {Array.from({ length: 10 }, (_, index) => (
         <button key={index} onClick={() => onNumberClick(index)} className="number-grid-button">
@@ -221,15 +223,6 @@ const RecallDisplay = ({ onNumberClick }) => (
         </button>
       ))}
     </div>
-  </div>
-);
-
-const GameOverDisplay = ({ score, maxDigitsInRound, onRestart }) => (
-  <div className="numbers-instructions">
-    <h2>Game Over</h2>
-    <p>Your final score is: {score}</p>
-    <p>Maximum digits recalled in one round: {maxDigitsInRound}</p>
-    <button onClick={onRestart} className="number-setting-button-submit">Done</button>
   </div>
 );
 

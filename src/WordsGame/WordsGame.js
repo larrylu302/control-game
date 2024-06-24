@@ -2,17 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import './WordsGame.css';
 import BackToHomeButton from '../Backtohomebutton';
 import { useScores } from '../ScoresContext';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate hook from React Router
+import { useParams, useNavigate } from 'react-router-dom';
 import audioInstructions from "./words-audio.mp3";
 
 const ANIMALS = ['Lion', 'Tiger', 'Bear', 'Elephant', 'Giraffe', 'Zebra', 'Fox', 'Wolf', 'Eagle', 'Hawk', 'Shark', 'Dolphin', 'Whale', 'Frog', 'Deer', 'Rabbit'];
 
 const WordsGame = () => {
   const { scores, updateScores } = useScores();
-  const navigate = useNavigate(); // Hook to access the navigate function
+  const navigate = useNavigate();
   const { name, day } = useParams();
-  const audioRef = useRef(null); // Reference for audio element
-  const [isMuted, setIsMuted] = useState(false); // State for mute functionality
+  const audioRef = useRef(null);
+  const [isMuted, setIsMuted] = useState(false);
 
   const SettingsForm = ({ onSave, initialSettings }) => {
     const [localSettings, setLocalSettings] = useState(initialSettings);
@@ -81,9 +81,9 @@ const WordsGame = () => {
     totalRounds: 1,
     maxWordsRecalled: 0,
     initialSettings: {
-      numWords: 1,
-      memorizationTimePerWord: 1,
-      totalRounds: 1
+      numWords: 3,
+      memorizationTimePerWord: 3,
+      totalRounds: 5
     }
   });
 
@@ -220,6 +220,11 @@ const WordsGame = () => {
         }
         {gameState.showChoices &&
           <div>
+            <div className="order-list">
+              {gameState.correctWords.map((word, index) => (
+                <div key={index} className="order-item">{index + 1}. {word}</div>
+              ))}
+            </div>
             <h2>Select the words in the order they were presented:</h2>
             <div className="word-grid">
               {ANIMALS.map((animal, index) => (
@@ -246,7 +251,7 @@ const WordsGame = () => {
         'Max Words Recalled in One Round': gameState.maxWordsRecalled,
       }
     )
-    navigate(`/${name}/${day}/home`); // Navigate back to the home page
+    navigate(`/${name}/${day}/home`);
   }
 
   function renderGameOver() {
@@ -280,7 +285,7 @@ const WordsGame = () => {
       <>
         <div style={{ marginBottom: '30px' }} className='words-instructions'>
           <h1>Word Recall</h1>
-          Directions: You will be presented with several words. Your job is to remember these words in order and select tiles with those words in the exact same order that they were presented.
+          Directions: You will be words at the top of your screen. Your job is to find these words in the grid at the bottom, click on the matching words as fast and you can and when you're done click the submit button
 
           <div style={{ paddingTop: '20px' }}>But be careful! You cannot change your answers once you’ve selected a tile. Choose wisely. The fate of the multiverse depends on you!</div>
         </div>
