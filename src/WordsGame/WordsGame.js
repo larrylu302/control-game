@@ -285,7 +285,7 @@ const WordsGame = () => {
       <>
         <div style={{ marginBottom: '30px' }} className='words-instructions'>
           <h1>Word Recall</h1>
-          Directions: You will be words at the top of your screen. Your job is to find these words in the grid at the bottom, click on the matching words as fast and you can and when you're done click the submit button
+          Directions: You will be presented with two words at the top of the screen. Your job is to find these words in the grid at the bottom, click on the matching words as fast and you can and when you're done click the submit button
 
           <div style={{ paddingTop: '20px' }}>But be careful! You cannot change your answers once you’ve selected a tile. Choose wisely. The fate of the multiverse depends on you!</div>
         </div>
