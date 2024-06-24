@@ -433,11 +433,11 @@ const CategoriesGame = () => {
                       <tr key={rowIndex}>
                         <td
                           className={`category-cell ${
-                            gameState.userChoices[categoryIndex][rowIndex] ? "filled" : "faded"
+                          "filled"
                           }`}
                           onClick={() => assignWordToCell(categoryIndex, rowIndex)}
                         >
-                          {gameState.userChoices[categoryIndex][rowIndex] || gameState.correctWords[categoryIndex * 5 + rowIndex] || ""}
+                          {gameState.userChoices[categoryIndex][rowIndex]}
                         </td>
                       </tr>
                     ))}
