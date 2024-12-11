@@ -6,8 +6,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import audioInstructions from "./categories-audio.mp3";
 
 const Animals = ["Lion", "Tiger", "Bear", "Elephant", "Giraffe"];
-const Fruits = ["Apple", "Banana", "Orange", "Grape", "Mango"];
-const Vegetables = ["Carrot", "Broccoli", "Spinach", "Potato", "Tomato"];
+const Fruits = ["Apple", "Banana", "Blueberry", "Grape", "Mango"];
+const Vegetables = ["Carrot", "Broccoli", "Spinach", "Potato", "Corn"];
 const Colors = ["Red", "Blue", "Green", "Yellow", "Purple"];
 const Countries = ["USA", "Canada", "Mexico", "UK", "China"];
 const Sports = ["Soccer", "Basketball", "Baseball", "Tennis", "Swimming"];
@@ -573,7 +573,7 @@ const CategoriesGame = () => {
   return (
     <div className="CategoriesGame">
       <audio ref={audioRef} src={audioInstructions} />
-      <BackToHomeButton />
+      {gameState.currentRound <= gameState.totalRounds && <BackToHomeButton />}
       {gameState.currentRound <= gameState.totalRounds && renderFirstGameUI()}
       {gameState.currentRound > gameState.totalRounds && renderGameOver()}
       {showSettingsForm && renderSettingsForm()}

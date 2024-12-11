@@ -148,8 +148,7 @@ const ReversedNumbersGame = () => {
 
   return (
     <div className="ReversedNumbersGame">
-      <BackToHomeButton />
-
+      {!gameState.gameOver && <BackToHomeButton />}
       {!gameStarted && !showSettingsForm && (
         <div>
           <div style={{ marginBottom: '50px', marginLeft: '30px', marginRight: '30px', paddingBottom: '70px' }} className='numbers-instructions'>

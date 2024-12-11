@@ -138,8 +138,7 @@ const NumbersGame = () => {
 
   return (
     <div className="NumbersGame">
-      <BackToHomeButton />
-
+      {!gameState.gameOver && <BackToHomeButton />}
       {!gameStarted && !showSettingsForm && (
         <div>
           <div style={{ marginBottom: '50px', marginLeft: '30px', marginRight: '30px', paddingBottom: '70px' }} className='numbers-instructions'>

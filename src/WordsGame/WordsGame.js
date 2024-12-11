@@ -189,7 +189,7 @@ const WordsGame = () => {
   return (
     <div className="WordsGame">
       <audio ref={audioRef} src={audioInstructions} />
-      <BackToHomeButton />
+      {gameState.currentRound <= gameState.totalRounds && <BackToHomeButton />}
       {gameState.currentRound <= gameState.totalRounds && renderGameUI()}
       {gameState.currentRound > gameState.totalRounds && renderGameOver()}
       {showSettingsForm && renderSettingsForm()}
