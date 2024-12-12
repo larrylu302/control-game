@@ -164,10 +164,15 @@ const CategoriesGame = () => {
   const [isMuted, setIsMuted] = useState(false); // State for mute functionality
 
   useEffect(() => {
-    if (audioRef.current && !isMuted && gameState.showInitial) {
-      audioRef.current.play();
+    if (audioRef.current) {
+      if ((gameState.showInitial || showSettingsForm) && !isMuted) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
     }
-  }, [isMuted, gameState.showInitial]);
+  }, [isMuted, gameState.showInitial, showSettingsForm]);
 
   const processResult = () => {
     const score = gameState.correctWords.reduce(
@@ -394,23 +399,6 @@ const CategoriesGame = () => {
       handleChoice(selectedWord);
     };
 
-    const assignWordToCell = (categoryIndex, rowIndex) => {
-      if (gameState.selectedWord) {
-        setGameState((prevState) => {
-          const newChoices = [...prevState.userChoices];
-          if (!newChoices[categoryIndex][rowIndex] && !prevState.userChoices.flat().includes(gameState.selectedWord)) {
-            newChoices[categoryIndex][rowIndex] = gameState.selectedWord;
-            return {
-              ...prevState,
-              userChoices: newChoices,
-              selectedWord: "",
-            };
-          }
-          return prevState;
-        });
-      }
-    };
-
     return (
       <>
         {gameState.showSecondChoices && (
@@ -445,31 +433,21 @@ const CategoriesGame = () => {
                 </table>
               ))}
             </div>
-            <div className="word-bank">
-              <select
-                onChange={handleDropdownChange}
-                className="word-selector"
-                value={gameState.selectedWord}
-              >
-                <option value="" disabled>
-                  Select a Word
-                </option>
-                {allWords.map((word, index) => (
-                  <option
-                    key={index}
-                    value={word}
-                    disabled={gameState.userChoices.flat().includes(word)}
-                  >
-                    {word}
-                  </option>
-                ))}
-              </select>
+            <div className="word-bank second-phase-bank">
+              {allWords.map((word, index) => (
+                <button
+                  key={index}
+                  className={`word-button ${gameState.selectedWord === word ? "selected" : ""} ${
+                    gameState.userChoices.flat().includes(word) ? "grayed-out" : ""
+                  }`}
+                  onClick={() => handleChoice(word)}
+                  disabled={gameState.userChoices.flat().includes(word)}
+                >
+                  {word}
+                </button>
+              ))}
             </div>
-            <button
-              onClick={submitFinalChoices}
-              className="green-button"
-              disabled={!canSubmitChoices()}
-            >
+            <button onClick={submitFinalChoices} className="green-button-categories" disabled={!canSubmitChoices()}>
               Submit Selection
             </button>
           </div>
@@ -573,24 +551,26 @@ const CategoriesGame = () => {
   return (
     <div className="CategoriesGame">
       <audio ref={audioRef} src={audioInstructions} />
-      {gameState.currentRound <= gameState.totalRounds && <BackToHomeButton />}
+      {gameState.showInitial && <BackToHomeButton />}
       {gameState.currentRound <= gameState.totalRounds && renderFirstGameUI()}
       {gameState.currentRound > gameState.totalRounds && renderGameOver()}
       {showSettingsForm && renderSettingsForm()}
       {gameState.showInitial && renderInitialView()}
       {gameState.showWaitTime && renderWaitTime()}
       {gameState.showSecondChoices && renderSecondGameUI()}
-      <button
-        className="mute-button"
-        onClick={() => {
-          setIsMuted(!isMuted);
-          if (audioRef.current) {
-            audioRef.current.muted = !isMuted;
-          }
-        }}
-      >
-        {isMuted ? "Unmute" : "Mute"}
-      </button>
+      {(gameState.showInitial || showSettingsForm) && (
+        <button
+          className="mute-button"
+          onClick={() => {
+            setIsMuted(!isMuted);
+            if (audioRef.current) {
+              audioRef.current.muted = !isMuted;
+            }
+          }}
+        >
+          {isMuted ? "Unmute" : "Mute"}
+        </button>
+      )}
     </div>
   );
 };
