@@ -404,7 +404,7 @@ const CategoriesGame = () => {
         {gameState.showSecondChoices && (
           <div className="game-container">
             <h2>
-              Navigate through the words and assign the correct words to the correct category. You will not be able to go back once a word is assigned, so choose carefully. Be as quick as you can! Press "Submit Selection" when you are done.
+              Navigate through the words and assign the correct words to the correct category. You will not be able to go back once a word is assigned, so choose carefully. Be as quick as you can! Press "Submit Selection" when you are done. Note: Scroll through the word bank to see more choices
             </h2>
             <div className="categories-container">
               {gameState.selectedCategories.map((category, categoryIndex) => (
